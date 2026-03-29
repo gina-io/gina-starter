@@ -1,0 +1,66 @@
+/**
+ * demo bundle
+ *
+ * */
+var demo = require('gina');
+
+// gina lib samples
+// var lib             = demo.lib;
+// var routing         = lib.routing;
+// var console         = lib.logger;
+// var operate         = lib.math.operate;
+// var Collection      = lib.Collection;
+// var SessionStore    = lib.SessionStore; // see: https://gina.io/docs/guides/sessions
+// var Domain          = lib.Domain;
+
+
+// Do whatever things you need to do before server starts
+// e.g.: register session, set a shared path for your template engine ...
+// This is mostly pre-start configuration
+//demo.onInitialize( function(event, app, express){
+//    var self = demo;
+//    // getting config/app.json would be: self.getConfig('app')
+//    // or self.getConfig().app
+//    var conf = self.getConfig();
+//
+//    // --- Session store (pick one backend) ---
+//    // var session      = require('express-session');
+//    // var SessionStore = lib.SessionStore;
+//    //
+//    // Redis — multi-pod / K8s (requires: npm install ioredis)
+//    // Configure connectors.json: { "myRedis": { "connector": "redis", "host": "...", "port": 6379, "ttl": 86400 } }
+//    // session.name = 'myRedis';
+//    //
+//    // SQLite — dev / staging / single-pod (requires: Node >= 22.5.0, zero npm deps)
+//    // Configure connectors.json: { "myDb": { "connector": "sqlite", "database": ":memory:", "ttl": 86400 } }
+//    // session.name = 'myDb';
+//    //
+//    // var StoreClass = new SessionStore(session);  // returns connector-specific Store class
+//    // app.use(session({
+//    //     secret           : process.env.SESSION_SECRET || 'changeme',
+//    //     resave           : false,
+//    //     saveUninitialized: false,
+//    //     store            : new StoreClass(),
+//    //     cookie           : { secure: false, maxAge: 86400000 }
+//    // }));
+//
+//    // you can also use express middleware components directly
+//    // eg.: app.use( session({secret: '1234567890QWERTY'}) );
+//
+//    //then notify the server that startup sequence can be resumed
+//    event.emit('complete', app);// this is important !
+//});
+
+// If you need to do something once the server has started
+// e.g.: start a cron or a watcher
+// demo.onStarted(function(){
+//     console.info('demo has started ! ');
+// });
+
+// Catch unhandled errors
+demo.onError(function(err, req, res, next){
+    console.error('[ BOOTSTRAP ] <demo> fatal error: ' + err.message + '\nstack:\n'+ err.stack);
+    next(err);
+});
+
+demo.start();

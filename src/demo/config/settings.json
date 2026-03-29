@@ -1,0 +1,14 @@
+// bundle needs to be restarted on changes !!
+{
+    "$schema": "https://gina.io/schema/settings.json",
+    "region": {
+        // <language>_<COUNTRY_ISO_SHORT_CODE> — e.g. en_CM, en_US, fr_FR, de_DE
+        "culture": "en_US",
+        // <language_iso_short_code> — e.g. en, fr, de
+        "isoShort": "en",
+        // <date_format> — e.g. mm/dd/yyyy, dd/mm/yyyy, yyyy/mm/dd
+        "date": "mm/dd/yyyy",
+        // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        "timeZone": "America/New_York"
+    }
+}

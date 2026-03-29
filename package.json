@@ -1,0 +1,16 @@
+{
+  "name": "gina-starter",
+  "version": "0.0.1",
+  "description": "Minimal starter project for Gina — one bundle, one route, one HTML template.",
+  "scripts": {
+    "setup": "gina project:add @myproject --path=$(pwd) && gina bundle:add demo @myproject",
+    "start": "gina bundle:start demo @myproject",
+    "stop": "gina bundle:stop demo @myproject"
+  },
+  "dependencies": {
+    "gina": "latest"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
