@@ -10,5 +10,12 @@ cache/
 # Node
 node_modules/
 
+# Docker
+docker/couchbase/data/
+
 # OS
 .DS_Store
+
+# Local-only, never track
+.claude/
+CLAUDE.md
