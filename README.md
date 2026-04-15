@@ -61,6 +61,44 @@ src/
 gina bundle:stop demo @myproject
 ```
 
+## Docker Compose (with Couchbase)
+
+Run the entire stack in containers — no local Node.js or database install required.
+
+**Prerequisites:** [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) (v2+).
+
+```bash
+docker compose up
+```
+
+This starts three containers:
+
+| Service | Port | Purpose |
+|---|---|---|
+| `app` | 3100 | Gina bundle (`demo`) |
+| `couchbase` | 8091 | Couchbase Community Edition admin console |
+| `couchbase-init` | — | One-shot: creates cluster, bucket, user, and sample data |
+
+Open `http://localhost:3100/` to see the app, or `http://localhost:8091/` for the Couchbase admin console (login: `Administrator` / `administrator`).
+
+### Connecting to Couchbase
+
+The starter ships with a `connectors.docker.json` overlay in `src/demo/config/` pre-configured for the Docker network. To activate it, rename it to `connectors.json` (replacing the empty default):
+
+```bash
+cp src/demo/config/connectors.docker.json src/demo/config/connectors.json
+docker compose up --build
+```
+
+Sample documents are pre-seeded in the `demo` bucket — query them from your entity models. See the [Models & entities guide](https://gina.io/docs/guides/models) for details.
+
+### Stopping and cleaning up
+
+```bash
+docker compose down          # stop containers (data preserved in volume)
+docker compose down -v       # stop containers and delete Couchbase data
+```
+
 ## Next steps
 
 - Add a namespace: `gina namespace:add demo/blog @myproject`

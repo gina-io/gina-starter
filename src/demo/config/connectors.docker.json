@@ -1,0 +1,14 @@
+// Docker Compose overlay — active when NODE_SCOPE=local and running inside Docker.
+// Connects to the Couchbase container on the Docker network.
+// Host values come from environment variables set in docker-compose.yml.
+{
+  "$schema": "https://gina.io/schema/connectors.json",
+  "couchbase": {
+    "protocol" : "couchbase://",
+    "host"     : "${CB_HOST}",
+    "database" : "${CB_BUCKET}",
+    "username" : "${CB_USER}",
+    "password" : "${CB_PASS}",
+    "ping"     : "2m"
+  }
+}
