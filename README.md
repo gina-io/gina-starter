@@ -19,7 +19,8 @@ cd myproject
 gina project:add @myproject --path=$(pwd)
 gina bundle:add demo @myproject
 
-# 3. Start
+# 3. Start the framework, then the bundle
+gina start
 gina bundle:start demo @myproject
 ```
 
@@ -80,6 +81,7 @@ src/
 
 ```bash
 gina bundle:stop demo @myproject
+gina stop    # stops the framework too
 ```
 
 ## Next steps
