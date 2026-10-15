@@ -6,6 +6,7 @@ Minimal starter project for [Gina](https://gina.io) — one bundle, one route, o
 
 - Node.js >= 18
 - Gina CLI installed globally: `npm install -g gina`
+- On Windows: run these steps inside WSL2, or use the [dev container](#dev-container)
 
 ## Quick start
 
@@ -24,6 +25,26 @@ gina bundle:start demo @myproject
 
 Open your browser at the URL printed in the terminal output (e.g. `http://localhost:3100/`).
 You should see **Hello World !**
+
+## Dev container
+
+The repository includes a [dev container](.devcontainer/devcontainer.json): Node.js 24 on Debian, with the Gina CLI installed for the container's `node` user. Open the folder in VS Code with the [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) extension (**Dev Containers: Reopen in Container**), or in [GitHub Codespaces](https://github.com/features/codespaces).
+
+- When the container is created, it installs Gina and registers the project and the `demo` bundle.
+- Each time it starts, it starts the framework, then the bundle.
+- Port 3100 is forwarded: open `http://localhost:3100/` (in Codespaces, open the port from the **Ports** tab).
+
+The dev container is for development. To run a bundle in a production container, see [K8s and Docker](https://gina.io/docs/guides/k8s-docker).
+
+### On Windows
+
+Use Docker Desktop with its WSL 2 backend, and keep the source in the Linux file system:
+
+- clone the repository in a WSL terminal, under your Linux home directory, then open it from there (`code .`, then **Reopen in Container**);
+- or run **Dev Containers: Clone Repository in Container Volume**;
+- or use Codespaces.
+
+Don't open a clone that sits on the Windows drive (`C:\…`, which WSL shows as `/mnt/c/…`). Docker [documents](https://docs.docker.com/desktop/features/wsl/best-practices/) that containers receive file-change events only for files stored in the Linux file system, and in development Gina reloads a changed controller only when its file watcher reports the change. See also [Windows](https://gina.io/docs/getting-started/installation#windows) in the installation guide.
 
 ## What's inside
 
