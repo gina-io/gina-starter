@@ -4,8 +4,8 @@ Minimal starter project for [Gina](https://gina.io) — one bundle, one route, o
 
 ## Prerequisites
 
-- Node.js >= 18
-- Gina CLI installed globally: `npm install -g gina`
+- Node.js >= 22
+- Gina CLI installed globally: `npm install -g gina` (see the [installation guide](https://gina.io/docs/getting-started/installation))
 - On Windows: run these steps inside WSL2, or use the [dev container](#dev-container)
 
 ## Quick start

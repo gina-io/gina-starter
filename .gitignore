@@ -6,9 +6,15 @@ tmp/
 cache/
 .gna/
 .lh/
+# Written by `gina project:add` and `gina bundle:add`, for this machine
+/env.json
+/manifest.json
 
 # Node
 node_modules/
+# Written by the first `gina bundle:start`, which runs `npm install`. Remove
+# this line if you add dependencies of your own and want to track the lockfile.
+/package-lock.json
 
 # Docker
 docker/couchbase/data/
