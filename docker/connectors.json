@@ -5,6 +5,9 @@
 // boot, unable to read src/demo/models/demo/entities. Host, bucket and user are the
 // ones the compose file creates; the password comes from CB_PASS (docker-compose.yml)
 // through ${secret:CB_PASS}, the placeholder form Gina fills in from the environment.
+// scope pins the data scope to local, the one the init script stamps on the sample
+// documents: without it, Gina 0.7.4 scopes the entities to Couchbase's _default
+// instead of NODE_SCOPE, and queries filtered by $scope miss those documents.
 {
   "$schema": "https://gina.io/schema/connectors.json",
   "demo": {
@@ -14,6 +17,7 @@
     "database"     : "demo",
     "username"     : "appuser",
     "password"     : "${secret:CB_PASS}",
+    "scope"        : "local",
     "pingInterval" : "2m"
   }
 }
