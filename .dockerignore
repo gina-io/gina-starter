@@ -1,0 +1,14 @@
+# The image registers the project itself while it builds (gina project:add,
+# then gina bundle:add --import): keep out what setup on this machine wrote,
+# and what the Gina runtime and npm write.
+manifest.json
+env.json
+# Remove this line too if you track the lockfile (see .gitignore).
+package-lock.json
+node_modules
+bundles
+releases
+logs
+tmp
+cache
+.gna

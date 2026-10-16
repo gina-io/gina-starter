@@ -104,12 +104,14 @@ This starts three containers:
 
 Open `http://localhost:3100/` to see the app, or `http://localhost:8091/` for the Couchbase admin console (login: `Administrator` / `administrator`).
 
+The image registers the project and its `demo` bundle while it builds (`gina project:add`, then `gina bundle:add --import`), so it needs no `manifest.json` or `env.json` from your clone; `.dockerignore` keeps out the ones your local setup wrote.
+
 ### Connecting to Couchbase
 
-The starter ships with a `connectors.docker.json` overlay in `src/demo/config/` pre-configured for the Docker network. To activate it, rename it to `connectors.json` (replacing the empty default):
+The starter ships a Couchbase connector set up for the Docker network in `docker/connectors.json`. Gina does not read it there (inside `src/demo/config/` it would be loaded as a second connector set named `docker`, and the bundle would not start). To use it, copy it over the empty default:
 
 ```bash
-cp src/demo/config/connectors.docker.json src/demo/config/connectors.json
+cp docker/connectors.json src/demo/config/connectors.json
 docker compose up --build
 ```
 
