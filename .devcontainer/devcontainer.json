@@ -1,0 +1,21 @@
+// Dev container for gina-starter: Node.js 24 on Debian, with the Gina CLI
+// installed for the container's `node` user. Open this folder with VS Code's
+// Dev Containers extension, or in GitHub Codespaces (see the README).
+{
+    "name": "gina-starter",
+    "image": "mcr.microsoft.com/devcontainers/javascript-node:5-24-trixie",
+
+    // Runs once, when the container is created: install Gina, then register
+    // the project and its demo bundle. --import registers the existing
+    // src/demo, and lets a rebuilt container run this again.
+    "postCreateCommand": "npm install -g gina@latest && gina project:add @myproject --path=${containerWorkspaceFolder} && gina bundle:add demo @myproject --import",
+
+    // Runs on every start: the framework first, then the demo bundle.
+    "postStartCommand": "gina start && gina bundle:start demo @myproject",
+
+    // The demo bundle serves http on port 3100.
+    "forwardPorts": [3100],
+    "portsAttributes": {
+        "3100": { "label": "demo" }
+    }
+}
