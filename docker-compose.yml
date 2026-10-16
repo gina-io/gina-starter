@@ -1,0 +1,67 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3100:3100"
+    environment:
+      # gina-init bootstrap
+      GINA_PROJECT_NAME: myproject
+      GINA_BUNDLES: demo
+      GINA_PROJECT_PATH: /app
+      GINA_PORT_START: "3100"
+      GINA_DEF_ENV: dev
+      GINA_DEF_SCOPE: local
+      GINA_DEF_PROTOCOL: "http/1.1"
+      GINA_DEF_SCHEME: http
+      NODE_ENV: dev
+      NODE_SCOPE: local
+      # Couchbase password, read through ${secret:CB_PASS} once docker/connectors.json
+      # is copied into src/demo/config/ (see the README)
+      CB_PASS: password123
+    depends_on:
+      # Waits for the Couchbase setup when the couchbase profile is on; ignored otherwise
+      couchbase-init:
+        condition: service_completed_successfully
+        required: false
+    restart: unless-stopped
+
+  # Couchbase runs only with the couchbase profile: docker compose --profile couchbase up
+  couchbase:
+    profiles: [couchbase]
+    image: couchbase:community-8.0.2
+    ports:
+      - "8091:8091"   # Admin console
+      - "8092:8092"   # Views
+      - "8093:8093"   # N1QL query
+      - "8094:8094"   # Full-text search
+      - "11210:11210" # Data (KV)
+    volumes:
+      - cb-data:/opt/couchbase/var
+    healthcheck:
+      # /ui/index.html answers without credentials in every state; /pools answers 401
+      # once the cluster has an administrator, so a restart never became healthy
+      test: ["CMD-SHELL", "curl -sf http://localhost:8091/ui/index.html || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  # One-shot init container: sets up the cluster, bucket, user and sample data.
+  # Runs once, then exits 0. The app service waits for it to complete.
+  couchbase-init:
+    profiles: [couchbase]
+    image: couchbase:community-8.0.2
+    depends_on:
+      couchbase:
+        condition: service_healthy
+    volumes:
+      - ./docker/couchbase/init.sh:/init.sh:ro
+    entrypoint: ["/bin/bash", "/init.sh"]
+    environment:
+      CB_HOST: couchbase
+      CB_USER: appuser
+      CB_PASS: password123
+      CB_BUCKET: demo
+
+volumes:
+  cb-data:
