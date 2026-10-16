@@ -17,8 +17,10 @@ ADMIN_PASS="administrator"
 BASE="http://${CB_HOST}:8091"
 
 # ── Wait for Couchbase to accept REST calls ───────────────────────────────────
+# With credentials: once the cluster has an administrator, /pools answers 401
+# to anonymous calls, and a restart on the persisted volume would wait forever.
 echo "[init] Waiting for Couchbase REST API..."
-until curl -sf "${BASE}/pools" > /dev/null 2>&1; do
+until curl -sf -u "${ADMIN_USER}:${ADMIN_PASS}" "${BASE}/pools" > /dev/null 2>&1; do
     sleep 2
 done
 echo "[init] Couchbase is ready."
@@ -69,12 +71,14 @@ else
 fi
 
 # ── Create application user ──────────────────────────────────────────────────
+# Community Edition has no query_* roles (the server answers 400 to them);
+# bucket_full_access covers the bucket's documents and its N1QL queries.
+# The PUT creates or updates the user, so it runs again safely on every start.
 echo "[init] Creating application user '${CB_USER}'..."
-curl -sf -X PUT -u "${ADMIN_USER}:${ADMIN_PASS}" \
+curl -sf -o /dev/null -X PUT -u "${ADMIN_USER}:${ADMIN_PASS}" \
     "${BASE}/settings/rbac/users/local/${CB_USER}" \
     -d password="${CB_PASS}" \
-    -d roles="bucket_full_access[${CB_BUCKET}],query_select[${CB_BUCKET}],query_insert[${CB_BUCKET}],query_update[${CB_BUCKET}],query_delete[${CB_BUCKET}]" \
-    || true  # ignore error if user already exists
+    -d roles="bucket_full_access[${CB_BUCKET}]"
 
 echo "[init] User '${CB_USER}' ready."
 
